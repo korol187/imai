@@ -10,6 +10,7 @@ export class AppService {
   async getUsers(query: string) {
     const url = `dict/users/?limit=10&type=search&platform=instagram&q=${query}`;
     const responce = await this.httpService.get(url)
+    console.log('--------------------');
     return responce.data.data;
   }
 
@@ -17,6 +18,8 @@ export class AppService {
   async getFeed(query: string) {
     const url = `raw/ig/user/feed/?url=${query}`;
     const responce = await this.httpService.get(url)
+    console.log('--------------------');
+
     return responce.data.items;
   }
 
@@ -24,6 +27,8 @@ export class AppService {
   async getContacts(query: string) {
     const url = `exports/contacts/?platform=instagram&url=${query}`;
     const responce = await this.httpService.get(url)
+    console.log('--------------------');
+
     return responce.data.user_profile;
   }
 }

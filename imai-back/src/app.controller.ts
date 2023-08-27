@@ -1,8 +1,11 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+
 import { AppService } from './app.service';
 import { ParamsCheck } from './paramsCheck.decorator';
 
 @Controller()
+@UseInterceptors(CacheInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
