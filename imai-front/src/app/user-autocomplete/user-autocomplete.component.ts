@@ -51,13 +51,9 @@ export class UserAutocompleteComponent {
 
   getPostsAndContacts(username: string) {
     this.feeds = this.httpCustomService.getFeed(username);
-
-    this.feeds.subscribe(res => console.log(res));
     this.contacts = this.httpCustomService.getContacts(username).pipe(
       map(contactsFull => contactsFull.contacts)
     );
-    this.contacts.subscribe(res => console.log(res));
-
   }
 
 }
