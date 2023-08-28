@@ -1,0 +1,15 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>User</mat-label>
+        <input matInput aria-label="StaUserte" [matAutocomplete]="auto" [formControl]="stateCtrl">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let state of filteredStates | async" [value]="state.fullname">
+                <img alt="" class="example-option-img" [src]="state.picture" height="25">
+                <span>@{{state.username}}</span> |
+                <span>{{state.fullname}}</span> |
+                <small>followers: {{state.followers }}</small>
+                <!-- <small>followers: {{state.followers | abbreviateNumber}}</small> -->
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
