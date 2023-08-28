@@ -31,7 +31,7 @@ export interface State {
     NgFor,
     MatSlideToggleModule,
     AsyncPipe,
-    // AbbreviateNumberPipe
+    AbbreviateNumberPipe
   ],
 })
 export class UserAutocompleteComponent {

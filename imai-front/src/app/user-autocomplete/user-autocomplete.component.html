@@ -7,8 +7,7 @@
                 <img alt="" class="example-option-img" [src]="state.picture" height="25">
                 <span>@{{state.username}}</span> |
                 <span>{{state.fullname}}</span> |
-                <small>followers: {{state.followers }}</small>
-                <!-- <small>followers: {{state.followers | abbreviateNumber}}</small> -->
+                <small>{{state.followers | abbreviateNumber}}</small>
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
