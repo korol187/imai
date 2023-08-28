@@ -2,13 +2,30 @@
     <mat-form-field class="example-full-width">
         <mat-label>User</mat-label>
         <input matInput aria-label="StaUserte" [matAutocomplete]="auto" [formControl]="stateCtrl">
-        <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let state of filteredStates | async" [value]="state.fullname">
-                <img alt="" class="example-option-img" [src]="state.picture" height="25">
-                <span>@{{state.username}}</span> |
-                <span>{{state.fullname}}</span> |
-                <small>{{state.followers | abbreviateNumber}}</small>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPostsAndContacts($event.option.value)'>
+            <mat-option *ngFor="let user of users | async" [value]="user.username">
+                <img alt="" class="example-option-img" [src]="user.picture" height="25">
+                <span>@{{user.username}}</span> |
+                <span>{{user.fullname}}</span> |
+                <small>{{user.followers | abbreviateNumber}}</small>
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
 </form>
+
+<mat-card>
+    <mat-card-content *ngFor="let contact of contacts | async" class="text-center">
+        {{contact.type | uppercase}}: {{contact.formatted_value}}
+    </mat-card-content>
+</mat-card>
+
+<div class="feeds">
+    <mat-card class="example-card" *ngFor="let feed of feeds | async">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{feed.caption.text | slice:0:10}}</mat-card-title>
+            <mat-card-subtitle>Likes: {{feed.like_count}} | Comments: {{feed.comment_count}} </mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image [src]="feed.display_url" [alt]="feed.caption.text">
+    </mat-card>
+</div>

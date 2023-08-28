@@ -1,21 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { NgFor, AsyncPipe, SlicePipe, UpperCasePipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { HttpCustomService, User } from '../http-custom.service';
+import { HttpCustomService, User, Contact, Feed } from '../http-custom.service';
 import { AbbreviateNumberPipe } from '../abbreviate-number.pipe';
-
-export interface State {
-  picture: string;
-  fullname: string;
-  followers: string;
-}
 
 @Component({
   selector: 'app-user-autocomplete',
@@ -31,23 +27,37 @@ export interface State {
     NgFor,
     MatSlideToggleModule,
     AsyncPipe,
-    AbbreviateNumberPipe
+    AbbreviateNumberPipe,
+    MatCardModule,
+    SlicePipe,
+    UpperCasePipe,
+    MatButtonModule
   ],
 })
 export class UserAutocompleteComponent {
   stateCtrl = new FormControl('');
-  filteredStates: Observable<User[]>;
+  users: Observable<User[]>;
+  feeds!: Observable<Feed[]>;
+  contacts!: Observable<Contact[]>;
+  httpCustomService: HttpCustomService;
 
   constructor(httpCustomService: HttpCustomService) {
-    // httpCustomService.getUsers('шелягіна')
-    //   .subscribe(res => console.log(res));
-    // httpCustomService.getFeed("gusenica_lo").subscribe(res => console.log(res));
-    // httpCustomService.getContacts('gusenica_lo').subscribe(res => console.log(res));
-
-    this.filteredStates = this.stateCtrl.valueChanges.pipe(
+    this.httpCustomService = httpCustomService
+    this.users = this.stateCtrl.valueChanges.pipe(
       filter(query => (query || '').length > 2),
-      switchMap(name => httpCustomService.getUsers(name as string))
+      switchMap(name => this.httpCustomService.getUsers(name as string))
     );
+  }
+
+  getPostsAndContacts(username: string) {
+    this.feeds = this.httpCustomService.getFeed(username);
+
+    this.feeds.subscribe(res => console.log(res));
+    this.contacts = this.httpCustomService.getContacts(username).pipe(
+      map(contactsFull => contactsFull.contacts)
+    );
+    this.contacts.subscribe(res => console.log(res));
+
   }
 
 }
